@@ -4,17 +4,15 @@ import boto3
 import os
 
 schedules = os.environ.get("schedule", "")
-paramZone = os.environ.get("zone", "America/Los_Angeles")
 
 DB_AVAILABLE_STATUS   = "available"
-DB_UNAVAILABLE_STATUS = "unavailable"
+DB_UNAVAILABLE_STATUS = "stopped"
 
 CLIENT      = boto3.client('rds')
 OFF_OP      = "OFF"
 ON_OP       = "ON"
 TIME_FORMAT = '%H:%M:%S'
-ZONE        = tz.gettz(paramZone)
-TIME_NOW    = datetime.now().astimezone(ZONE)
+TIME_NOW    = datetime.now()
 HOUR        = TIME_NOW.hour
 MINUTES     = TIME_NOW.minute
 
@@ -68,5 +66,8 @@ def callback(response):
 # entrypoint
 def lambda_handler(event, context):
     for schedule in schedules.split(","):
-        handleRDSAvailability(*schedule.split("::"), callback)
-
+        try:
+            handleRDSAvailability(*schedule.split("::"), callback)
+        except TypeError:
+            pass
+        
