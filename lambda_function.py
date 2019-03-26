@@ -1,4 +1,5 @@
-from datetime import datetime, tz
+from datetime import datetime
+from dateutil import tz
 import boto3
 import os
 
