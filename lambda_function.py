@@ -38,7 +38,7 @@ def handleRDSAvailability(dbIdentifier, atime, btime, action, callback):
         return (not isParamsTimeInBetween()) and dbStatus == DB_UNAVAILABLE_STATUS
 
 
-    if action in ["OFF", "ON"]:
+    if action in [OFF_OP, ON_OP]:
         for page in CLIENT.get_paginator('describe_db_instances').paginate():
             for db in page.get("DBInstances"):
 
