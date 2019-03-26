@@ -9,17 +9,17 @@ paramZone = os.environ.get("zone", "America/Los_Angeles")
 DB_AVAILABLE_STATUS   = "available"
 DB_UNAVAILABLE_STATUS = "stopped"
 
-ZONE        = tz.gettz(paramZone)
-CLIENT      = boto3.client('rds')
-OFF_OP      = "OFF"
-ON_OP       = "ON"
+ZONE   = tz.gettz(paramZone)
+CLIENT = boto3.client('rds')
+OFF_OP = "OFF"
+ON_OP  = "ON"
 
 
 def handleRDSAvailability(dbIdentifier, atime, btime, action, callback):
     
     TIME_NOW = datetime.now().utcnow().astimezone(ZONE)
-    HOUR        = TIME_NOW.hour
-    MINUTES     = TIME_NOW.minute
+    HOUR     = TIME_NOW.hour
+    MINUTES  = TIME_NOW.minute
 
     def stringToDatetime(timeString):
         return datetime.strptime(timeString, '%H:%M:%S')
