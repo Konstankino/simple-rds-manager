@@ -27,7 +27,7 @@ def handleRDSAvailability(dbIdentifier, atime, btime, action, callback):
         hour = NOW.hour
         minute = NOW.minute
         return stringToDatetime("%s:00" % atime) <  stringToDatetime("%s:%s:00" % (hour, minute)) and \
-            stringToDatetime("%s:00" % btime) < stringToDatetime("%s:%s:00" % (hour, minute))
+            stringToDatetime("%s:00" % btime) > stringToDatetime("%s:%s:00" % (hour, minute))
 
 
     def shouldTurnOffDatabase(dbStatus):
