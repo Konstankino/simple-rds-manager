@@ -1,11 +1,9 @@
-from datetime import datetime
-from dateutil import tz
+from datetime import datetime, tz
 import boto3
 import os
 
 schedules = os.environ.get("schedule")
 paramZone = os.environ.get("zone", "America/Los_Angeles")
-
 
 DB_AVAILABLE_STATUS   = "available"
 DB_UNAVAILABLE_STATUS = "unavailable"
@@ -20,7 +18,7 @@ HOUR        = TIME_NOW.hour
 MINUTES     = TIME_NOW.minute
 
 
-def handleRDSAvailability(db_identifier, atime, btime, action, callback):
+def handleRDSAvailability(dbIdentifier, atime, btime, action, callback):
 
     def stringToDatetime(timeString):
         return datetime.strptime(timeString, TIME_FORMAT)
@@ -43,16 +41,16 @@ def handleRDSAvailability(db_identifier, atime, btime, action, callback):
         for page in CLIENT.get_paginator('describe_db_instances').paginate():
             for db in page.get("DBInstances"):
 
-                if (db_identifier == db.get("DBInstanceIdentifier")):
+                if (dbIdentifier == db.get("DBInstanceIdentifier")):
 
                     if action == OFF_OP:
                         if shouldTurnOffDatabase(db.get("DBInstanceStatus")):
-                            # CLIENT.stop_db_instance(DBInstanceIdentifier=dbIdentifier)
+                            CLIENT.stop_db_instance(DBInstanceIdentifier=dbIdentifier)
                             callback({"isOff": True})
 
                     if action == ON_OP:
                         if shouldTurnOnDatabase(db.get("DBInstanceStatus")):
-                            # CLIENT.start_db_instance(DBInstanceIdentifier=dbIdentifier)
+                            CLIENT.start_db_instance(DBInstanceIdentifier=dbIdentifier)
                             callback({"isOn": True})
 
 
