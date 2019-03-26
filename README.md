@@ -1,11 +1,17 @@
 ## How to use it
 
 Just copy and paste this code into your new AWS Lambda function.
-Pass in your schedule using ENV variables, such as:
-1. `schedule` this has to be in a format: "rds-db1::23:00::8:00::OFF,rds-db2::13:00::18:00::OFF,rds-db2::8:00::23:00::ON" to:
 
-With the `SCHEDULE` above, the Lambda:
+Pass in your `schedule` using ENV variables, such as:
+1. "rds-db1::23:00::8:00::OFF,rds-db2::13:00::18:00::OFF,rds-db2::8:00::23:00::ON"
 
-1) will stop database with identifier "rds-db1" from 11:00PM to 8:00AM
-2) will stop database with indentifier "rds-db2" from 1:00PM to 6:00PM
-3) will start database with indentifier "rds-db3" from 8:00AM to 23:00AM 
+With the `schedule` above, the Lambda will make sure that:
+
+1) database with identifier "rds-db1" is in "stopped" state from 11:00PM to 8:00AM
+2) database with identifier "rds-db2" is in "stopped" state from 1:00PM to 6:00PM
+3) database with identifier "rds-db3" is in "available" state from 8:00AM to 23:00AM 
+
+## ToDo:
+
+1. Make it timezone friendly
+
