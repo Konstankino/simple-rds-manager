@@ -4,23 +4,25 @@ import boto3
 import os
 
 schedules = os.environ.get("schedule", "")
+paramZone = os.environ.get("zone", "America/Los_Angeles")
 
 DB_AVAILABLE_STATUS   = "available"
 DB_UNAVAILABLE_STATUS = "stopped"
 
+ZONE        = tz.gettz(paramZone)
 CLIENT      = boto3.client('rds')
 OFF_OP      = "OFF"
 ON_OP       = "ON"
-TIME_FORMAT = '%H:%M:%S'
-TIME_NOW    = datetime.now()
-HOUR        = TIME_NOW.hour
-MINUTES     = TIME_NOW.minute
 
 
 def handleRDSAvailability(dbIdentifier, atime, btime, action, callback):
+    
+    TIME_NOW = datetime.now().utcnow().astimezone(ZONE)
+    HOUR        = TIME_NOW.hour
+    MINUTES     = TIME_NOW.minute
 
     def stringToDatetime(timeString):
-        return datetime.strptime(timeString, TIME_FORMAT)
+        return datetime.strptime(timeString, '%H:%M:%S')
 
 
     def isParamsTimeInBetween():
@@ -44,12 +46,12 @@ def handleRDSAvailability(dbIdentifier, atime, btime, action, callback):
 
                     if action == OFF_OP:
                         if shouldTurnOffDatabase(db.get("DBInstanceStatus")):
-                            CLIENT.stop_db_instance(DBInstanceIdentifier=dbIdentifier)
+                            #CLIENT.stop_db_instance(DBInstanceIdentifier=dbIdentifier)
                             callback({"isOff": True})
 
                     if action == ON_OP:
                         if shouldTurnOnDatabase(db.get("DBInstanceStatus")):
-                            CLIENT.start_db_instance(DBInstanceIdentifier=dbIdentifier)
+                            #CLIENT.start_db_instance(DBInstanceIdentifier=dbIdentifier)
                             callback({"isOn": True})
 
 
@@ -65,8 +67,10 @@ def callback(response):
 
 # entrypoint
 def lambda_handler(event, context):
+
     for schedule in schedules.split(","):
         try:
             handleRDSAvailability(*schedule.split("::"), callback)
         except TypeError:
             pass
+        
