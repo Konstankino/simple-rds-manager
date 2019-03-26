@@ -15,7 +15,10 @@ With the `schedule` above, the Lambda will make sure that:
 ## ToDo:
 
 ~1. Make it timezone friendly~
+
 2. improve scheduling mechanizm
+
 3. package with `pip`
+
 4. add hooks
 
