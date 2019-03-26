@@ -70,4 +70,3 @@ def lambda_handler(event, context):
             handleRDSAvailability(*schedule.split("::"), callback)
         except TypeError:
             pass
-        
