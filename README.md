@@ -1,5 +1,3 @@
-## This is Work In Progress
-
 ## How to use it
 
 Just copy and paste this code into your new AWS Lambda function.
