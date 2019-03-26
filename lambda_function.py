@@ -3,7 +3,7 @@ from dateutil import tz
 import boto3
 import os
 
-schedules = os.environ.get("schedule")
+schedules = os.environ.get("schedule", "")
 paramZone = os.environ.get("zone", "America/Los_Angeles")
 
 DB_AVAILABLE_STATUS   = "available"
