@@ -2,7 +2,7 @@
 
 Just copy and paste this code into your new AWS Lambda function.
 Pass in your schedule using ENV variables:
-1. `ZONE` this will define a time zone
+1. `ZONE` this will define a time zone, fallback to "America/Los_Angeles"
 2. `SCHEDULE` this has to be in a format: "rds-db1::23:00::8:00::OFF,rds-db2::13:00::18:00::OFF,rds-db2::8:00::23:00::ON" to:
 
 With the `SCHEDULE` above, the Lambda:
