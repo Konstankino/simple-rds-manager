@@ -47,12 +47,12 @@ def handleRDSAvailability(dbIdentifier, atime, btime, action, callback):
                     if action == OFF_OP:
                         if shouldTurnOffDatabase(db.get("DBInstanceStatus")):
                             client.stop_db_instance(DBInstanceIdentifier=dbIdentifier)
-                            callback({"isOff": True})
 
                     if action == ON_OP:
                         if shouldTurnOnDatabase(db.get("DBInstanceStatus")):
                             client.start_db_instance(DBInstanceIdentifier=dbIdentifier)
-                            callback({"isOn": True})
+                    
+                    callback({"action": action})
 
 
 # here you may send notification to Slack...
